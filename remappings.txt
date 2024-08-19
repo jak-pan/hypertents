@@ -1,3 +1,4 @@
 @polytope-labs/ismp-solidity/=node_modules/@polytope-labs/ismp-solidity/interfaces/
 @across-protocol/contracts/=node_modules/@across-protocol/contracts/contracts
 @polytope-labs/solidity-merkle-trees/=node_modules/@polytope-labs/solidity-merkle-trees/src/
+openzeppelin/=node_modules/openzeppelin-solidity/contracts/
