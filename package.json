@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@across-protocol/contracts": "^3.0.10",
+    "@polytope-labs/ismp-solidity": "^0.4.1",
+    "@polytope-labs/solidity-merkle-trees": "^0.2.3"
+  }
+}
