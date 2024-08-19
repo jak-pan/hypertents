@@ -2,7 +2,8 @@ name: test
 
 on:
   pull_request:
-    main
+    branches:
+      - main
 
 env:
   FOUNDRY_PROFILE: ci
