@@ -1,0 +1,3 @@
+[submodule "hypertents/lib/forge-std"]
+	path = hypertents/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
