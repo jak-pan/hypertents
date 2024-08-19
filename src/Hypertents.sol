@@ -17,7 +17,7 @@ struct Redeem {
 
 interface ITokenFaucet {
     // drips the feeToken once per day
-    function drip(address);
+    function drip(address) external;
 }
 
 contract Hypertents is ISettlementContract, BaseIsmpModule {
@@ -37,7 +37,7 @@ contract Hypertents is ISettlementContract, BaseIsmpModule {
 
     constructor(address faucet) {
         address host = hostAddr();
-        address feeToken = IIIsmpHost(host).feeToken();
+        address feeToken = IIsmpHost(host).feeToken();
         // drip us some tokens
         ITokenFaucet(faucet).drip(feeToken);
         // approve the host to spend infinitely
@@ -84,12 +84,12 @@ contract Hypertents is ISettlementContract, BaseIsmpModule {
         Redeem memory redeem = Redeem({
             filler: msg.sender,
             token: address(0),
-            amount: address(0)
+            amount: uint256(0)
         });
         IDispatcher(hostAddr()).dispatch(
             DispatchPost({
                 dest: StateMachine.evm(0), // destination chain id
-                to: address(this),
+                to: abi.encode(address(this)),
                 body: abi.encode(redeem),
                 timeout: 0,
                 fee: 0,
@@ -108,7 +108,7 @@ contract Hypertents is ISettlementContract, BaseIsmpModule {
 
         // dispatch state read for order hash on destination
 
-        bytes[] memory keys = new bytes(1);
+        bytes[] memory keys = new bytes[](1);
         // todo: add storage slot hash for _filled[orderHash]
         keys[0] = bytes.concat(abi.encodePacked(address(this)), bytes(""));
         // commit requestKey to orderHash in _refunds
