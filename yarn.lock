@@ -918,10 +918,10 @@
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.9.6.tgz#2a880a24eb19b4f8b25adc2a5095f2aa27f39677"
   integrity sha512-xSmezSupL+y9VkHZJGDoCBpmnB2ogM13ccaYDWqJTfS3dbuHkgjuwDFUmaFauBCboQMGB/S5UqUl2y54X99BmA==
 
-"@polytope-labs/ismp-solidity@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@polytope-labs/ismp-solidity/-/ismp-solidity-0.4.1.tgz#3896beb6ad367f38f62ea9d99d72d20b52ad2b84"
-  integrity sha512-fEsDufxSq4rvrNZF5Bkr0Fli31cYrC5yEews6AupeF6VZ341IGM6aJZVGUHqf+eYFvID71PbMa65JRcXTUjlww==
+"@polytope-labs/ismp-solidity@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@polytope-labs/ismp-solidity/-/ismp-solidity-0.4.2.tgz#535b732a502b2befd25ee336392bc4037968f356"
+  integrity sha512-1UsVaQDjYxQ6Swi1eky+Q7HbrUy0yhnSkuBiTX5h2PsQhtLqu5TKI069mJIUyjijFS8qUpkXg+EI95whi5fPRQ==
   dependencies:
     "@polytope-labs/solidity-merkle-trees" "^0.2.3"
     openzeppelin-solidity "^4.8.1"

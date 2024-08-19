@@ -24,7 +24,9 @@ contract Hypertents is ISettlementContract, BaseIsmpModule {
     }
 
     /// Fill the order on the destination chain
-    function fill(CrossChainOrder memory order) external {}
+    function fill(CrossChainOrder memory order) external {
+        // fill order and dispatch cross-chain message
+    }
 
     /// Request for a refund on the source chain
     function refund(CrossChainOrder memory order) external {}
