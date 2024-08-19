@@ -1,6 +1,9 @@
 name: test
 
-on: workflow_dispatch
+on:
+  pull_request:
+    branches:
+      - main
 
 env:
   FOUNDRY_PROFILE: ci
@@ -21,6 +24,22 @@ jobs:
         uses: foundry-rs/foundry-toolchain@v1
         with:
           version: nightly
+      - name: Install yarn
+        run: |
+          curl -fsSL --create-dirs -o $HOME/bin/yarn https://github.com/yarnpkg/yarn/releases/download/v1.22.22/yarn-1.22.22.js
+          chmod +x $HOME/bin/yarn
+          echo "$HOME/bin" >> $GITHUB_PATH
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+          cache-dependency-path: "yarn.lock"
+          cache: "yarn"
+
+      - name: Install npm dependencies
+        run: |
+          yarn install
 
       - name: Run Forge build
         run: |
