@@ -80,7 +80,7 @@ contract Hypertents is ISettlementContract, BaseIsmpModule {
     function resolve(
         CrossChainOrder memory order,
         bytes memory fillerData
-    ) public view returns (ResolvedCrossChainOrder memory) {
+    ) public pure returns (ResolvedCrossChainOrder memory) {
         // Decode the orderData to retrieve the input, output, and filler output information.
         (
             Input[] memory swapperInputs,
