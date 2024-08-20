@@ -19,11 +19,24 @@ import {
 } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { Account } from "@ethereumjs/util";
+import {
+  ExtractAbiFunctionNames,
+  ExtractAbiFunctions,
+  ExtractAbiFunction,
+  AbiParameter,
+} from "abitype";
+import { ParseAbi } from "abitype";
+
+import { HypertentsAbi } from "../out/Hypertents.sol/Hypertents.abi";
+
 // const ABI = JSON.parse(
 //   await readFile("./out/Hypertents.sol/Hypertents.abi.json", "utf-8")
 // );
 
 import ABI from "./abi";
+import { CrossChainOrderStruct } from "../typechain/ERC7683.sol/ISettlementContractAbi";
+
+type Initiate = ExtractAbiFunction<typeof ABI, "initiate">;
 
 config();
 
@@ -48,11 +61,23 @@ async function main() {
 
   const bscHypertents = getContract({
     address: HYPERTENTS_CONTRACT,
-    abi: ABI.ABI,
+    abi: ABI,
     client: { public: bscTestnetClient, wallet: bscWalletClient },
   });
 
-  const hash = await bscHypertents.write.initiate([{ settlementContract: `0x`, swapper: `0x`, nonce: BigInt(0), originChainId: 0, initiateDeadline: 0, fillDeadline: 0, orderData: `0x` }, `0x`, `0x`]);
+  const hash = await bscHypertents.write.initiate([
+    {
+      settlementContract: HYPERTENTS_CONTRACT,
+      swapper: bscWalletClient.account.address,
+      nonce: BigInt(0),
+      originChainId: 0,
+      initiateDeadline: 0,
+      fillDeadline: 0,
+      orderData: `0x0`,
+    },
+    `0x`,
+    `0x`,
+  ]);
 
   console.log("bscHypertents", bscHypertents);
 }
