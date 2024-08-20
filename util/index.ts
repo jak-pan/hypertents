@@ -19,14 +19,16 @@ import {
 } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { Account } from "@ethereumjs/util";
-const ABI = JSON.parse(
-  await readFile("./out/Hypertents.sol/Hypertents.abi.json", "utf-8")
-);
+// const ABI = JSON.parse(
+//   await readFile("./out/Hypertents.sol/Hypertents.abi.json", "utf-8")
+// );
+
+import ABI from "../out/Hypertents.sol/Hypertents.abi.json";
 
 config();
 
 async function main() {
-  const account = privateKeyToAccount(process.env.PRIVATE_KEY);
+  const account = privateKeyToAccount(`0x${process.env.PRIVATE_KEY}`);
 
   const bscWalletClient = createWalletClient({
     chain: bscTestnet,
@@ -49,8 +51,6 @@ async function main() {
     abi: ABI,
     client: { public: bscTestnetClient, wallet: bscWalletClient },
   });
-
-  bscHypertents.write.initiate();
 
   console.log("bscHypertents", bscHypertents);
 }
