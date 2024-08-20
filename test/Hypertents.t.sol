@@ -10,18 +10,6 @@ address constant FAUCET_B = address(0x02);
 address constant ALICE = address(0x03);
 
 
-contract TestTokenFaucet {
-    ITokenFaucet public tokenFaucetContract;
-
-    constructor(address _tokenFaucetAddress) {
-        tokenFaucetContract = ITokenFaucet(_tokenFaucetAddress);
-    }
-
-    function drip(address recipient) external {
-        tokenFaucetContract.drip(recipient);
-    }
-}
-
 contract BaseTest is Test {
 
     function testInstantiateSameChain() public {
