@@ -25,7 +25,9 @@ contract TestTokenFaucet {
 contract BaseTest is Test {
     function testInstantiateSameChain() public {
         // just any from https://github.com/polytope-labs/ismp-solidity/blob/e67af4a359b3a53fa8132f7223c89ba680a24439/interfaces/IIsmpModule.sol#L84-L112
-        vm.chainId(11155111);
+        uint256 forkId = vm.createFork("wss://ethereum-sepolia-rpc.publicnode.com");
+        vm.selectFork(forkId);
+        assertEq(vm.activeFork(), forkId);
 
         TestTokenFaucet faucetA = new TestTokenFaucet(FAUCET_A);
         TestTokenFaucet faucetB = new TestTokenFaucet(FAUCET_B);
