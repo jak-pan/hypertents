@@ -25,7 +25,6 @@ contract BaseTest is Test, BaseIsmpModule {
 
         // instantiate Hypertents with default faucet address
         Hypertents tentA = new Hypertents(FAUCET_SEPOLIA);
-        Hypertents tentB = new Hypertents(FAUCET_SEPOLIA);
 
         // just operate using feeToken for now
         address host = hostAddr();
@@ -74,7 +73,7 @@ contract BaseTest is Test, BaseIsmpModule {
 
         // create a CrossChainOrder
         CrossChainOrder memory order = CrossChainOrder({
-            settlementContract: address(tentB),
+            settlementContract: address(tentA),
             swapper: address(ALICE),
             nonce: 0,
             originChainId: 0,
