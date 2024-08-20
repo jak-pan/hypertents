@@ -4,11 +4,9 @@ pragma solidity ^0.8.13;
 import "forge-std/Test.sol";
 import "src/Hypertents.sol";
 
-address constant FAUCET_A = address(0x17d8cc0859fbA942A7af243c3EBB69AbBfe0a320);
-address constant FAUCET_B = address(0x02);
+address constant FAUCET_SEPOLIA = address(0x17d8cc0859fbA942A7af243c3EBB69AbBfe0a320);
 
 address constant ALICE = address(0x03);
-
 
 contract BaseTest is Test {
 
@@ -17,12 +15,16 @@ contract BaseTest is Test {
         uint256 forkId = vm.createFork("wss://ethereum-sepolia-rpc.publicnode.com");
         vm.selectFork(forkId);
 
+        // emit log_address(address(faucetA));
+        // emit log_address(FAUCET_A);
+
         // instantiate Hypertents with default address
-        Hypertents tentA = new Hypertents(FAUCET_A);
-        // Hypertents tentB = new Hypertents(address(faucetB));
+        Hypertents tentA = new Hypertents(FAUCET_SEPOLIA);
+        Hypertents tentB = new Hypertents(FAUCET_SEPOLIA);
+
         // create a CrossChainOrder
         CrossChainOrder memory order = CrossChainOrder({
-            settlementContract: address(FAUCET_B),
+            settlementContract: address(tentB),
             swapper: address(ALICE),
             nonce: 0,
             originChainId: 0,
