@@ -9,6 +9,7 @@ import {StateMachine} from "@polytope-labs/ismp-solidity/StateMachine.sol";
 import {SafeERC20} from "openzeppelin/token/ERC20/utils/SafeERC20.sol";
 import {IERC20} from "openzeppelin/token/ERC20/IERC20.sol";
 import {ECDSA} from "openzeppelin/utils/cryptography/ECDSA.sol";
+import "openzeppelin/utils/Strings.sol";
 
 
 interface ITokenFaucet {
@@ -58,9 +59,9 @@ contract Hypertents is ISettlementContract, BaseIsmpModule {
         );
 
         // verify signature
-        // bytes32 orderHash = keccak256(abi.encode(order));
-        // (address recoveredAddress,,) = ECDSA.tryRecover(orderHash, signature);
-        // assert(recoveredAddress == order.swapper);
+        bytes32 orderHash = keccak256(abi.encode(order));
+        (address recoveredAddress, ECDSA.RecoverError err) = ECDSA.tryRecover(orderHash, signature);
+        assert(recoveredAddress == order.swapper);
 
         // collect funds to address(this)
         for (uint256 i = 0; i < crossChainOrder.swapperInputs.length; i++) {

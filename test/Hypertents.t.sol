@@ -13,13 +13,14 @@ address constant FAUCET = address(0x17d8cc0859fbA942A7af243c3EBB69AbBfe0a320);
 uint32 constant CHAIN_ID_SEPOLIA = 11155111;
 uint32 constant CHAIN_ID_BSC = 97;
 
-address constant ALICE = address(0x03);
 address constant BOB = address(0x04);
 
 uint256 constant FAUCET_DRIP = 1000000000000000000000;
 
 contract BaseTest is Test, BaseIsmpModule {
     function testInstantiateSameChain() public {
+        (address alice, uint256 aliceKey) = makeAddrAndKey("alice");
+
         // just any from https://github.com/polytope-labs/ismp-solidity/blob/e67af4a359b3a53fa8132f7223c89ba680a24439/interfaces/IIsmpModule.sol#L84-L112
         uint256 forkIdSepolia = vm.createFork("wss://ethereum-sepolia-rpc.publicnode.com");
         vm.selectFork(forkIdSepolia);
@@ -32,7 +33,7 @@ contract BaseTest is Test, BaseIsmpModule {
         address token = IIsmpHost(host).feeToken();
 
         ITokenFaucet(FAUCET).drip(token);
-        vm.startPrank(ALICE);
+        vm.startPrank(alice);
         ITokenFaucet(FAUCET).drip(token);
         IERC20(token).approve(address(tentSepolia), 10);
         vm.stopPrank();
@@ -43,7 +44,7 @@ contract BaseTest is Test, BaseIsmpModule {
 
         // assert that alice has some tokens
         assertEq(IERC20(token).balanceOf(address(this)), FAUCET_DRIP);
-        assertEq(IERC20(token).balanceOf(ALICE), FAUCET_DRIP);
+        assertEq(IERC20(token).balanceOf(alice), FAUCET_DRIP);
         assertEq(IERC20(token).balanceOf(BOB), FAUCET_DRIP);
 
 
@@ -57,7 +58,7 @@ contract BaseTest is Test, BaseIsmpModule {
         swapperOutputs[0] = Output({
             token: token,
             amount: 10000,
-            recipient: ALICE,
+            recipient: alice,
             chainId: CHAIN_ID_SEPOLIA
         });
 
@@ -75,7 +76,7 @@ contract BaseTest is Test, BaseIsmpModule {
         // create a CrossChainOrder
         CrossChainOrder memory order = CrossChainOrder({
             settlementContract: address(tentSepolia),
-            swapper: address(ALICE),
+            swapper: alice,
             nonce: 0,
             originChainId: 0,
             initiateDeadline: 0,
@@ -83,7 +84,11 @@ contract BaseTest is Test, BaseIsmpModule {
             orderData: orderData
         });
 
-        tentSepolia.initiate(order, new bytes(0), new bytes(0));
+        // sign the order's hash with Alice's key
+        bytes32 orderHash = keccak256(abi.encode(order));
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(aliceKey, orderHash);
+
+        tentSepolia.initiate(order, abi.encodePacked(r, s, v), new bytes(0));
 
         vm.startPrank(BOB);
         tentSepolia.fill(order, new bytes(0));
@@ -108,10 +113,12 @@ contract BaseTest is Test, BaseIsmpModule {
 
         // final asserts that the intent has been fulfilled
         assertEq(IERC20(token).balanceOf(BOB), FAUCET_DRIP-10000+10);
-        assertEq(IERC20(token).balanceOf(ALICE), FAUCET_DRIP-10+10000);
+        assertEq(IERC20(token).balanceOf(alice), FAUCET_DRIP-10+10000);
     }
 
     function testInstantiateMultiChain() public {
+        (address alice, uint256 aliceKey) = makeAddrAndKey("alice");
+
         // just any from https://github.com/polytope-labs/ismp-solidity/blob/e67af4a359b3a53fa8132f7223c89ba680a24439/interfaces/IIsmpModule.sol#L84-L112
         uint256 forkIdSepolia = vm.createFork("wss://ethereum-sepolia-rpc.publicnode.com");
         uint256 forkIdBsc = vm.createFork("wss://bsc-testnet-rpc.publicnode.com");
@@ -147,10 +154,10 @@ contract BaseTest is Test, BaseIsmpModule {
         ITokenFaucet(FAUCET).drip(token);
         assertEq(IERC20(token).balanceOf(address(this)), FAUCET_DRIP);
 
-        vm.startPrank(ALICE);
+        vm.startPrank(alice);
         ITokenFaucet(FAUCET).drip(token);
         // assert that alice has some tokens
-        assertEq(IERC20(token).balanceOf(ALICE), FAUCET_DRIP);
+        assertEq(IERC20(token).balanceOf(alice), FAUCET_DRIP);
         IERC20(token).approve(address(tentSepolia), 10);
         vm.stopPrank();
         // ---
@@ -165,7 +172,7 @@ contract BaseTest is Test, BaseIsmpModule {
         swapperOutputs[0] = Output({
             token: tokenBsc,
             amount: 10000,
-            recipient: ALICE,
+            recipient: alice,
             chainId: CHAIN_ID_BSC
         });
 
@@ -183,7 +190,7 @@ contract BaseTest is Test, BaseIsmpModule {
         // create a CrossChainOrder
         CrossChainOrder memory order = CrossChainOrder({
             settlementContract: address(tentSepolia),
-            swapper: address(ALICE),
+            swapper: alice,
             nonce: 0,
             originChainId: 0,
             initiateDeadline: 0,
@@ -191,7 +198,11 @@ contract BaseTest is Test, BaseIsmpModule {
             orderData: orderData
         });
 
-        tentSepolia.initiate(order, new bytes(0), new bytes(0));
+        // sign the order's hash with Alice's key
+        bytes32 orderHash = keccak256(abi.encode(order));
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(aliceKey, orderHash);
+
+        tentSepolia.initiate(order, abi.encodePacked(r, s, v), new bytes(0));
 
         vm.selectFork(forkIdBsc);
         vm.startPrank(BOB);
@@ -199,7 +210,7 @@ contract BaseTest is Test, BaseIsmpModule {
         vm.stopPrank();
 
         assertEq(IERC20(tokenBsc).balanceOf(BOB), FAUCET_DRIP-10000);
-        assertEq(IERC20(token).balanceOf(ALICE), 10000);
+        assertEq(IERC20(token).balanceOf(alice), 10000);
 
         vm.selectFork(forkIdSepolia);
         vm.startPrank(host);
@@ -219,6 +230,6 @@ contract BaseTest is Test, BaseIsmpModule {
 
         // final asserts that the intent has been fulfilled
         assertEq(IERC20(token).balanceOf(BOB), 10);
-        assertEq(IERC20(token).balanceOf(ALICE), FAUCET_DRIP-10);
+        assertEq(IERC20(token).balanceOf(alice), FAUCET_DRIP-10);
     }
 }
