@@ -23,7 +23,7 @@ import { Account } from "@ethereumjs/util";
 //   await readFile("./out/Hypertents.sol/Hypertents.abi.json", "utf-8")
 // );
 
-import ABI from "../out/Hypertents.sol/Hypertents.abi.json";
+import ABI from "./abi";
 
 config();
 
@@ -48,9 +48,11 @@ async function main() {
 
   const bscHypertents = getContract({
     address: HYPERTENTS_CONTRACT,
-    abi: ABI,
+    abi: ABI.ABI,
     client: { public: bscTestnetClient, wallet: bscWalletClient },
   });
+
+  const hash = await bscHypertents.write.initiate([{ settlementContract: `0x`, swapper: `0x`, nonce: BigInt(0), originChainId: 0, initiateDeadline: 0, fillDeadline: 0, orderData: `0x` }, `0x`, `0x`]);
 
   console.log("bscHypertents", bscHypertents);
 }
