@@ -41,7 +41,7 @@ type Initiate = ExtractAbiFunction<typeof ABI, "initiate">;
 config();
 
 async function main() {
-  const account = privateKeyToAccount(`0x${process.env.PRIVATE_KEY}`);
+  const account = privateKeyToAccount(process.env.PRIVATE_KEY as any);
 
   const bscWalletClient = createWalletClient({
     chain: bscTestnet,
