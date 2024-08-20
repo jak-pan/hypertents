@@ -1,23 +1,16 @@
-# dependencies
-node_modules
+# Compiler files
+cache/
+out/
 
-# yarn
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
+# Ignores development broadcast logs
+!/broadcast
+/broadcast/*/31337/
+/broadcast/**/dry-run/
+node_modules/
 
-# eslint
-.eslintcache
+# Docs
+docs/
 
-# misc
+# Dotenv file
+.env
 .DS_Store
-
-# IDE
-.vscode
-.idea
-
-# cli
-dist
