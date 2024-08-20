@@ -17,7 +17,7 @@ contract TestTokenFaucet {
         tokenFaucetContract = ITokenFaucet(_tokenFaucetAddress);
     }
 
-    function triggerDrip(address recipient) external {
+    function drip(address recipient) external {
         tokenFaucetContract.drip(recipient);
     }
 }
@@ -30,12 +30,12 @@ contract BaseTest is Test {
         vm.selectFork(forkId);
         assertEq(vm.activeFork(), forkId);
 
-        // TestTokenFaucet faucetA = new TestTokenFaucet(FAUCET_A);
+        TestTokenFaucet faucetA = new TestTokenFaucet(FAUCET_A);
         // emit log_address(address(faucetA));
         // emit log_address(FAUCET_A);
 
         // instantiate Hypertents with default address
-        Hypertents tentA = new Hypertents(FAUCET_A);
+        Hypertents tentA = new Hypertents(address(faucetA));
         // Hypertents tentB = new Hypertents(address(faucetB));
         // create a CrossChainOrder
         CrossChainOrder memory order = CrossChainOrder({
