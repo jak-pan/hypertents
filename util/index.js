@@ -50,6 +50,8 @@ async function main() {
     client: { public: bscTestnetClient, wallet: bscWalletClient },
   });
 
+  bscHypertents.write.initiate();
+
   console.log("bscHypertents", bscHypertents);
 }
 
