@@ -10,6 +10,7 @@ import {BaseIsmpModule, IncomingPostRequest, IncomingGetResponse} from "@polytop
 address constant FAUCET_SEPOLIA = address(0x17d8cc0859fbA942A7af243c3EBB69AbBfe0a320);
 
 address constant ALICE = address(0x03);
+address constant BOB = address(0x04);
 
 contract BaseTest is Test, BaseIsmpModule {
 
@@ -30,6 +31,9 @@ contract BaseTest is Test, BaseIsmpModule {
         ITokenFaucet(FAUCET_SEPOLIA).drip(token);
         IERC20(token).approve(address(tentA), 10);
         vm.stopPrank();
+        // vm.startPrank(BOB);
+        // ITokenFaucet(FAUCET_SEPOLIA).drip(token);
+        // vm.stopPrank();
 
         // assert that alice has some tokens
         assertEq(IERC20(token).balanceOf(address(this)), 1000000000000000000000);
@@ -49,17 +53,17 @@ contract BaseTest is Test, BaseIsmpModule {
         Output[] memory swapperOutputs = new Output[](1);
         swapperOutputs[0] = Output({
             token: token,
-            amount: 5,
+            amount: 10000,
             recipient: ALICE,
-            chainId: 1
+            chainId: 2
         });
 
         Output[] memory fillerOutputs = new Output[](1);
         fillerOutputs[0] = Output({
             token: token,
-            amount: 5,
+            amount: 10000,
             recipient: ALICE,
-            chainId: 1
+            chainId: 2
         });
 
         // Encode the data
@@ -77,5 +81,8 @@ contract BaseTest is Test, BaseIsmpModule {
         });
 
         tentA.initiate(order, new bytes(0), new bytes(0));
+
+        vm.startPrank(BOB);
+        tentA.fill(order, new bytes(0));
     }
 }
