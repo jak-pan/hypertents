@@ -10,11 +10,6 @@ import {SafeERC20} from "openzeppelin/token/ERC20/utils/SafeERC20.sol";
 import {IERC20} from "openzeppelin/token/ERC20/IERC20.sol";
 import {ECDSA} from "openzeppelin/utils/cryptography/ECDSA.sol";
 
-struct Redeem {
-    address filler;
-    address token;
-    uint256 amount;
-}
 
 interface ITokenFaucet {
     // drips the feeToken once per day
