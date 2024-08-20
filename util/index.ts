@@ -54,11 +54,6 @@ async function main() {
     transport: http(),
   });
 
-  const clients = {
-    sepolia: createPublicClient({ chain: sepolia, transport: http() }),
-    bscTestnet: createPublicClient({ chain: bscTestnet, transport: http() }),
-  };
-
   const bscHypertents = getContract({
     address: HYPERTENTS_CONTRACT,
     abi: ABI,
@@ -78,8 +73,6 @@ async function main() {
     `0x`,
     `0x`,
   ]);
-
-  console.log("bscHypertents", bscHypertents);
 }
 
 main();

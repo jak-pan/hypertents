@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "build": "forge build --extra-output-files abi"
+    "build": "forge build --extra-output-files abi",
+    "start": "npx tsx util/index.ts"
   },
   "type": "module",
   "dependencies": {
