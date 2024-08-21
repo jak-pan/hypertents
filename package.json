@@ -15,7 +15,8 @@
     "minimist": "^1.2.8",
     "openzeppelin-solidity": "4.8.1",
     "typescript": "^5.5.3",
-    "viem": "2.17.3"
+    "viem": "2.17.3",
+    "ethers": "^6.13.2"
   },
   "devDependencies": {
     "@types/node": "^20.14.10",
