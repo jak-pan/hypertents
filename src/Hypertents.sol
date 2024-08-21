@@ -10,11 +10,6 @@ import {SafeERC20} from "openzeppelin/token/ERC20/utils/SafeERC20.sol";
 import {IERC20} from "openzeppelin/token/ERC20/IERC20.sol";
 import {ECDSA} from "openzeppelin/utils/cryptography/ECDSA.sol";
 
-struct Redeem {
-    address filler;
-    address token;
-    uint256 amount;
-}
 
 interface ITokenFaucet {
     // drips the feeToken once per day
@@ -85,7 +80,7 @@ contract Hypertents is ISettlementContract, BaseIsmpModule {
     function resolve(
         CrossChainOrder memory order,
         bytes memory fillerData
-    ) public view returns (ResolvedCrossChainOrder memory) {
+    ) public pure returns (ResolvedCrossChainOrder memory) {
         // Decode the orderData to retrieve the input, output, and filler output information.
         (
             Input[] memory swapperInputs,
