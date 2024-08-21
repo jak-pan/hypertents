@@ -2,6 +2,8 @@
 
 Hypertents is a proof of concept implementation of cross-chain intents settled via hyperbridge.
 
+![Unknown-3](https://github.com/user-attachments/assets/d13051a2-5672-406c-bf3e-4ab451aa1843)
+
 Workflow:
 
 1. Swappers can post their intent `CrossChainOrder` on any source chain supported by Hyperbridge. For instance, Alice may submit the intent to swap 10 USDC input tokens on BSC for 9 USDT output tokens on ETH mainnet.
