@@ -10,6 +10,9 @@ node_modules/
 
 # Docs
 docs/
+broadcast/
 
 # Dotenv file
-.env
+.env*
+
+.DS_Store

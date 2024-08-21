@@ -72,6 +72,8 @@ contract BaseTest is Test, BaseIsmpModule {
         // Encode the data
         bytes memory orderData = abi.encode(swapperInputs, swapperOutputs, fillerOutputs);
 
+        emit log_bytes(orderData);
+
         // create a CrossChainOrder
         CrossChainOrder memory order = CrossChainOrder({
             settlementContract: address(tentSepolia),
